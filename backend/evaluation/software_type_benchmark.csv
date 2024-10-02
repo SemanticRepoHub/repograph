@@ -1,0 +1,49 @@
+repository,annotator,label,main_file_paths_1,main_file_paths_2,main_file_paths_3,comments
+allenai/allennlp,DG;RF,package,,,,
+ageitgey/face_recognition,DG;RF,package,,,,
+oeg-upm/gtfs-bench,DG;RF,script,composer/app.py,,,
+oeg-upm/ssspotter,DG;RF,service,app.py,,,
+oeg-upm/tada-gam,DG;RF,script,captain.py,app.py,,Can be discussed whether this is a script or a service. A script starts a series of Docker images which contain services
+oeg-upm/Morph-OME,DG;RF,service,app.py,,,
+oeg-upm/lynx-py,DG;RF,script,DocumentSimilarity.py,,,
+oeg-upm/fuzzy-c-means,DG;RF,library,,,,
+oeg-upm/tada-web,DG;RF,service,app.py,,,
+oeg-upm/tada-reduce-combine,DG;RF,service,app.py,,,
+oeg-upm/epw2rdf,DG;RF,script,scraper.py,,,
+oeg-upm/Ppool,DG;RF,library,,,,
+oeg-upm/agora-py,DG;RF,library,,,,
+usc-isi-i2/table-linker,DG;RF,package,,,,
+usc-isi-i2/t2wml-annotation,DG;RF,library,,,,
+usc-isi-i2/dptk,DG;RF,script,random_stats.py;feature.py;dbpedia_sparql.py;data_profiling.py;compute_feature.py,,,
+usc-isi-i2/sparql-jsonld,DG;RF,service,webpage/web.py,,,
+usc-isi-i2/wikidata-reservation,DG;RF,service,reservation_rest_api.py,,,
+usc-isi-i2/dig-sandpaper,DG;RF,library,,,,
+usc-isi-i2/mowgli-in-the-jungle,DG;RF,library,,,,
+usc-isi-i2/datamart-upload,DG;RF,library,,,,
+usc-isi-i2/pyrallel,DG;RF,library,,,,
+usc-isi-i2/wikidata-satellite,DG;RF,script,satellite/dmg.py,,,
+usc-isi-i2/rltk,DG;RF,library,,,,
+oarriaga/face_classification,DG;RF,service,src/web/faces.py,src/video_emotion_color_demo.py;src/image_gradcam_demo.py;src/train_emotion_classifier.py;src/image_emotion_gender_demo.py;src/image_emotion_gender_demo.py;src/train_gender_classifier.py,,missing many scripts are not annotated here
+oarriaga/paz,DG;RF,library,,,,
+Kamaropoulos/COVID19Py,DG;RF,library,,,,
+aboul3la/Sublist3r,DG;RF,package,,,,
+asciinema/asciinema,DG;RF,package,,,,
+fabric/fabric,DG;RF,package,,,,
+wting/autojump,DG;RF,package,,,,
+darkshredder/nominatim-feedback-reporter,DG;RF,service,backend/run.py,,,
+BakeNecko/DDOS_Python,DG;RF,service,bottle_app/app.py;falcon_app/main.py;django_app/manage.py;fastapi_app/main.py;pyramid_app/app.py,,,order does not matter
+EticaAI/HXL-Data-Science-file-formats,DG;RF,package,,,,
+kwai/DouZero,DG;RF,library,,,,
+PaddlePaddle/PaddleClas,DG;RF,package,,,,
+google-research/deeplab2,DG;RF,script,training/train.py;export_model.py,,,
+facebookresearch/xcit,DG;RF,script,main.py;run_with_submitit.py,,,
+autonomousvision/giraffe,DG;RF,script,render.py;train.py;eval.py;eval_files.py,,,
+facebookresearch/rcpm,DG;RF,script,main.py;plot-demo.py;plot-components.py,,,
+twitter-research/graph-neural-pde,DG;RF,script,src/run_GNN.py,src/run_best_ray.py;src/run_explicit_implicit_exp.py;src/run_image.py;src/train.py;src/visualise_attention.py;src/population_search.py,,except the first the order of the scripts in terms of importance is not clear
+yandex-research/rtdl,DG;RF,script,bin/tune.py;bin/mlp.py;bin/ensemble.py,,,order does not seem to matter
+Tencent/Tface,DG;RF,script,tools/img2tfrecord.py;tools/convert_new_index.py;tools/decode.py,,,
+pykale/pykale,DG;RF,library,,,,
+ARBML/Calliar,DG;RF,script,vis.py,,,not an executable script it has to be imported as a library
+yangxy/GPEN,DG;RF,script,face_enhancement.py;face_colorization.py,,,
+Microsoft/Graphormer,DG;RF,script,model.py,,,not an executable script it has to be imported as a library
+alibaba/AliceMind,DG;RF,script,PALM/train.py;StructBERT/run_classifier_multi_task.py;StructuralLM/run_seq_labeling.py;StructVBERT/tasks/nlvr2.py;StructVBERT/tasks/vqa.py;VECO/NLU/third_party/run_retrieval.py,,,order does not matter. There are more scripts
