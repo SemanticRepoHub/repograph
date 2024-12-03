@@ -41,7 +41,6 @@ class SummarizationService:
             log.info("Initialising CodeT5 model...")
             # Add device detection for GPU acceleration
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
-            log.info(" ----- !! Device is %s" %self.device)
             self.tokenizer = RobertaTokenizer.from_pretrained(
                 "Salesforce/codet5-base",
                 use_fast=True  # Use faster tokenizer implementation
