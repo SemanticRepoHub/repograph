@@ -13,11 +13,14 @@ services:
       - NEO4J_AUTH=neo4j/s3cr3t
       - NEO4J_dbms_security_auth__minimum__password__length=1
       - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_server_memory_pagecache_size=1G  # Updated to avoid exceeding physical memory
+      - NEO4J_server_memory_heap_initial__size=512M  # Reduced initial heap size
+      - NEO4J_server_memory_heap_max__size=1G  # Reduced max heap size
     volumes:
-      - ./.neo4j/data:/data
-      - ./.neo4j/import:/import
-      - ./.neo4j/logs:/logs
-      - ./.neo4j/plugins:/plugins
+      - /data  # Anonymous volume for Neo4j data
+      - /import # Anonymous volume for imports
+      - /logs   # Anonymous volume for logs
+      - /plugins # Anonymous volume for plugins
     networks:
       - repograph-network
     healthcheck:
@@ -49,16 +52,13 @@ services:
       context: frontend
       dockerfile: Dockerfile
     ports:
-        - '8080:8080'
+      - '8080:8080'
     networks:
       - repograph-network
     links:
       - repograph-backend
 
-volumes:
-  neo4j:
-    driver: local
-
 networks:
   repograph-network:
     driver: bridge
+

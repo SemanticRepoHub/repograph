@@ -4,10 +4,21 @@ WORKDIR /code
 
 COPY requirements.txt /code/requirements.txt
 
+RUN apt update &&\
+    apt install -y git &&\
+    apt install -y graphviz
+
+RUN pip install --upgrade pip
+
+RUN git clone https://github.com/SoftwareUnderstanding/inspect4py
+RUN cd inspect4py && pip install -e .
+
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
 
 COPY api_config.yaml /config.yaml
 
 COPY repograph /code/repograph
+
 
 CMD ["python3", "-m", "repograph.api"]

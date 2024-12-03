@@ -190,7 +190,7 @@ class RepographBuilder:
             self.modules[module.path] = module
 
         return repository
-
+    
     def _parse_requirements(
         self, requirements: List[Requirement], repository: Repository
     ) -> None:
@@ -204,23 +204,74 @@ class RepographBuilder:
         """
         if not requirements:
             log.warning("No requirements information found.")
-        else:
-            log.info("Parsing requirements information...")
-            for requirement in requirements:
-                package = Package.create_from_external_dependency(
-                    requirement.name, self.repository_name
-                )
+            return
 
-                relationship = Requires(
-                    repository,
-                    package,
-                    self.repository_name,
-                    specifications=list(map(lambda spec: " ".join(spec), requirement.specs)),
-                )
+        log.info("Parsing requirements information... %s", requirements)
+        
+        for requirement in requirements:
+            # Log the requirement details for debugging
+            log.debug("Requirement: %s, Name: %s", requirement, requirement.name)
 
-                self.graph.add(package, tx=self.tx, graph_name=self.graph_name)
-                self.graph.add(relationship, tx=self.tx, graph_name=self.graph_name)
-                self.requirements[requirement.name] = package
+            # Handle cases where requirement.name is None
+            if not requirement.name:
+                if "git+" in getattr(requirement, "url", ""):
+                    log.warning("Skipping Git-based dependency: %s", requirement.url)
+                else:
+                    log.warning("Skipping requirement with no name: %s", requirement)
+                continue  # Skip this requirement
+
+            # Create a package node from the requirement
+            package = Package.create_from_external_dependency(
+                requirement.name, self.repository_name
+            )
+
+            # Create the relationship for the requirement
+            relationship = Requires(
+                repository,
+                package,
+                self.repository_name,
+                specifications=list(map(lambda spec: " ".join(spec), requirement.specs)),
+            )
+
+            # Add the package and relationship to the graph
+            self.graph.add(package, tx=self.tx, graph_name=self.graph_name)
+            self.graph.add(relationship, tx=self.tx, graph_name=self.graph_name)
+
+            # Store the requirement in the requirements dictionary
+            self.requirements[requirement.name] = package
+
+
+
+#    #def _parse_requirements(
+#    #    self, requirements: List[Requirement], repository: Repository
+#    #) -> None:
+#    #    """Parses information extracted from the requirements.txt file.
+#
+#        Args:
+#            requirements (Optional[JSONDict]): The JSON describing the requirements.
+#                                               May be None if not found.
+#            repository (Repository): The parent Repository node for any created
+#                                     Package nodes.
+#        """
+#        if not requirements:
+#            log.warning("No requirements information found.")
+#        else:
+#            log.info("Parsing requirements information...")
+#            for requirement in requirements:
+#                package = Package.create_from_external_dependency(
+#                    requirement.name, self.repository_name
+#                )
+#
+#                relationship = Requires(
+#                    repository,
+#                    package,
+#                    self.repository_name,
+#                    specifications=list(map(lambda spec: " ".join(spec), requirement.specs)),
+#                )
+#
+#                self.graph.add(package, tx=self.tx, graph_name=self.graph_name)
+#                self.graph.add(relationship, tx=self.tx, graph_name=self.graph_name)
+#                self.requirements[requirement.name] = package
 
     def _parse_license(
         self, licenses: Optional[JSONDict], repository: Repository
@@ -390,7 +441,7 @@ class RepographBuilder:
             total (int): The total number of directories within the repository.
         """
         directory_path = strip_file_path_prefix(directory_name)
-        log.debug("Parsing directory '%s' (%d/%d)", directory_path, index + 1, total)
+        log.info("Parsing directory '%s' (%d/%d)", directory_path, index + 1, total)
 
         # Parse each file within the directory, update is_package
         # with result (whether file is __init__.py), and add to list
@@ -416,6 +467,7 @@ class RepographBuilder:
         relationship = Contains(parent, directory, self.repository_name)
         self.graph.add(parent, tx=self.tx, graph_name=self.graph_name)
         self.graph.add(relationship, tx=self.tx, graph_name=self.graph_name)
+        
 
         # Parse each extracted module
         for module, file_info in modules:
@@ -427,6 +479,7 @@ class RepographBuilder:
                 self.modules[module.canonical_name] = module
 
             # Now parse the contents of the module.
+            #log.info("!! 3-Parsing module contents %s, file_info %s\n " %(module, file_info)) 
             self._parse_module_contents(module, file_info)
 
             # Create a relationship between the Directory and the Module.
@@ -437,6 +490,7 @@ class RepographBuilder:
             # Finally add the module to the list of stored modules.
             self.modules[module.path] = module
             self.modules[module.canonical_name] = module
+        ##log.info("!! 4 - END Parsing directory '%s' (%d/%d) \n", directory_path, index + 1, total)
 
     def _parse_files_in_directory(
         self, directory_info: List[JSONDict]
@@ -1438,8 +1492,9 @@ class RepographBuilder:
         self._parse_license(licenses, repository)
 
         # Parse each directory
-        log.info("Extracting information from directories...")
+        log.debug("Extracting information from directories... len (%s): %s" % (len(directories), directories))
         for index, directory in enumerate(directories):
+            log.info("Extracting information from %s -%s" % (index, directory))
             self._parse_directory(
                 directory, directory_info[directory], index, len(directories)
             )
